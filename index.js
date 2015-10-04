@@ -116,6 +116,10 @@ var typeMap = {
 function inject ($, process, base, cb, opts, relative, ignoredFiles) {
   var items = []
 
+  if (!process) {
+    process = noop;
+  }
+
   // Normalize tags
   var tags = opts.tag instanceof Array ? opts.tag : [opts.tag];
 
@@ -136,7 +140,7 @@ function inject ($, process, base, cb, opts, relative, ignoredFiles) {
 
       if (fs.existsSync(file) && ignoredFiles.indexOf(src) === -1) {
         gulp.src(file)
-          .pipe(process || noop())
+          .pipe(process())
           .pipe(replace(el, opts.template))
           .pipe(through.obj(function (file, enc, cb) {
             cb()
